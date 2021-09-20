@@ -10,4 +10,5 @@ jobs:
       - image: cimg/node:16.8.0
     steps:
       - checkout
+      - run: npm install hardhat
       - run: npx hardhat test
