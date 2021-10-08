@@ -18,12 +18,12 @@ ERC721 public nonFungibleContract;
     nonFungibleContract = ERC721(_nftAddress);
   }
 
-  function createAuction( uint256 _tokenId, uint128 _price , uint256 _createTime ) public {
+  function createAuction( uint256 _tokenId, uint128 _price uint numDays  ) public {
     nonFungibleContract.safeTransferFrom(msg.address,address(this),_tokenId);
     Auction memory _auction = Auction({
        seller: msg.sender,
        price: uint128(_price),
-       createTime: _createTime
+       createTime: now+ numDays days;
     });
     tokenIdToAuction[_tokenId] = _auction;
   }
