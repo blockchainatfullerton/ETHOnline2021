@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
-import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
+import "./Mocks/IERC721.sol";
 
-contract Controller {
-ERC721 public nonFungibleContract;
+contract NFTController {
+IERC721 public nonFungibleContract;
 
   struct Auction {
     address seller;
@@ -15,15 +15,15 @@ ERC721 public nonFungibleContract;
   mapping (uint256 => Auction) public tokenIdToAuction;
 
   function TokenAuction( address _nftAddress ) public {
-    nonFungibleContract = ERC721(_nftAddress);
+    nonFungibleContract = IERC721(_nftAddress);
   }
 
-  function createAuction( uint256 _tokenId, uint128 _price uint numDays  ) public {
-    nonFungibleContract.safeTransferFrom(msg.address,address(this),_tokenId);
+  function createAuction( uint256 _tokenId, uint128 _price) public {
+    nonFungibleContract.safeTransferFrom(msg.sender,address(this),_tokenId);
     Auction memory _auction = Auction({
        seller: msg.sender,
        price: uint128(_price),
-       createTime: now+ numDays days;
+       createTime: block.timestamp
     });
     tokenIdToAuction[_tokenId] = _auction;
   }
@@ -32,7 +32,7 @@ ERC721 public nonFungibleContract;
     Auction memory auction = tokenIdToAuction[_tokenId];
     require(auction.seller != address(0));
     require(msg.value >= auction.price);
-    require(block.timestamp < createTime);
+    require(block.timestamp < auction.createTime);
 }
 
   function cancel( uint256 _tokenId ) public {
