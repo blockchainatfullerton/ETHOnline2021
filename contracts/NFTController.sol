@@ -14,11 +14,11 @@ IERC721 public nonFungibleContract;
 
   mapping (uint256 => Auction) public tokenIdToAuction;
 
-  function TokenAuction( address _nftAddress ) public {
+  function TokenAuction( address _nftAddress ) external {
     nonFungibleContract = IERC721(_nftAddress);
   }
 
-  function createAuction( uint256 _tokenId, uint128 _price) public {
+  function createAuction( uint256 _tokenId, uint128 _price) external {
     nonFungibleContract.safeTransferFrom(msg.sender,address(this),_tokenId);
     Auction memory _auction = Auction({
        seller: msg.sender,
@@ -28,14 +28,14 @@ IERC721 public nonFungibleContract;
     tokenIdToAuction[_tokenId] = _auction;
   }
 
-  function bid( uint256 _tokenId ) public payable {
+  function bid( uint256 _tokenId ) external payable {
     Auction memory auction = tokenIdToAuction[_tokenId];
     require(auction.seller != address(0));
     require(msg.value >= auction.price);
     require(block.timestamp < auction.createTime);
 }
 
-  function cancel( uint256 _tokenId ) public {
+  function cancel( uint256 _tokenId ) external {
     Auction memory auction = tokenIdToAuction[_tokenId];
     require(auction.seller == msg.sender);
 
