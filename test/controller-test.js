@@ -1,14 +1,21 @@
 const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
-const options = {method: 'GET'};
 
 describe("Controller contract", function () {
-  it("Deployment should allow user to deploy and acution for NFT", async function () {
-    const [owner, addr1, addr2] = await ethers.getSigners();
+  it("Should return the right name and the symbol", async function () {
 
-    const NFTController = await ethers.getContractFactory("NFTController");
+    const BasicNFT = await ethers.getContractFactory("SimpleNFT");
 
-    const hardhatToken = await NFTController.deploy();
+    const BasicNFTToken = await BasicNFT.deploy("SimpleNFT","SNFT");
+
+    await BasicNFTToken.deployed();
+
+    expect(await BasicNFTToken.name()).to.equal("SimpleNFT");
+    expect(await BasicNFTToken.symbol()).to.equal("SNFT");
+
+  
+
     
   });
 });

@@ -12,14 +12,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 
-contract MyNFT is ERC721URIStorage, Ownable {
+contract SimpleNFT is ERC721URIStorage, Ownable {
 
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIds;
 
 
-    constructor() public ERC721("MyNFT", "NFT") {}
+    constructor(string memory nameNFT, string memory symbolNFT) ERC721(nameNFT, symbolNFT) {}
 
 
     function mintNFT(address recipient, string memory tokenURI)
