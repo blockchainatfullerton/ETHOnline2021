@@ -10,12 +10,12 @@ describe("Controller contract", function () {
     const BasicNFTToken = await BasicNFT.deploy("SimpleNFT","SNFT");
     const NFTC = await ethers.getContractFactory("NFTController");
     const NFTController = await NFTC.deploy()
-    await BasicNFTToken.deployed();
-
+    
     expect(await BasicNFTToken.name()).to.equal("SimpleNFT");
     expect(await BasicNFTToken.symbol()).to.equal("SNFT");
-
-  
+    NFTController.createAuction(BasicNFTToken.address,1,3);
+    NFTController.bid(100);
+    NFTController.cancel(1);
 
     
   });
