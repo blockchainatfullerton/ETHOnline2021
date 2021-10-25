@@ -1,6 +1,6 @@
+# Node
 node_modules
-.env
 
-#Hardhat files
-cache
-artifacts
+# Dapptools
+out/
+.env
